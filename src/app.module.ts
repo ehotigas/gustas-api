@@ -1,13 +1,13 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AppController } from './app.controller';
 import { UserModule } from './user/UserModule';
+import { AppService } from './app.service';
+import { Module } from '@nestjs/common';
 
 @Module({
   imports: [
     MongooseModule.forRoot(
-      "mongodb+srv://ehotigas:tw39026928tw@cluster0.etsfwi4.mongodb.net/?retryWrites=true&w=majority"
+      "mongodb://localhost:27017"
     ),
     UserModule
   ],

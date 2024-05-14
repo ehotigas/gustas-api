@@ -1,10 +1,11 @@
+import { CreateUserDto } from './CreateUserDto';
+import { UpdateUserDto } from "./UpdateUserDto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Injectable } from "@nestjs/common";
 import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
 import { User } from "./User";
-import { CreateUserDto } from './CreateUserDto';
-import { UpdateUserDto } from "./UpdateUserDto";
+
 
 
 interface UserServiceInterface {
@@ -47,5 +48,10 @@ export class UserService implements UserServiceInterface {
 
     async delete(id: string) {
         await this.repository.deleteOne({ _id: id });
+    }
+
+    async login(email: string, password: string): Promise<Partial<User> | void> {
+        const user: any = await this.repository.find({ email: email });
+        if (user && user.password == password) return user; 
     }
 } 

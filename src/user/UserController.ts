@@ -1,14 +1,15 @@
 import { Body, Controller, Delete, Get, HttpCode, Inject, Param, Patch, Post, ValidationPipe } from "@nestjs/common";
 import { ApiCreatedResponse, ApiExtraModels, ApiOkResponse, ApiTags } from "@nestjs/swagger";
+import { GetAllUsersResponseDto } from "./GetAllUsersResponseDto";
 import { UpdateUserDto } from "./UpdateUserDto";
 import { CreateUserDto } from "./CreateUserDto";
 import { UserService } from "./UserService";
 import { User } from "./User";
-import { GetAllUsersResponseDto } from "./GetAllUsersResponseDto";
+import { UserLoginDto } from "./UserLoginDto";
 
 @ApiTags('User')
 @ApiExtraModels(User)
-@Controller()
+@Controller("user")
 export class UserController {
     constructor(
         @Inject("UserServiceInterface")
@@ -70,4 +71,17 @@ export class UserController {
     async delete(@Param('id') id: string) {
         await this.service.delete(id);
     }
+
+    @Post('/login')
+    @ApiOkResponse({
+        status: 200,
+        type: User
+    })
+    async login(
+        @Body(new ValidationPipe()) userLoginDto: UserLoginDto
+    ) {
+        const res = await this.service.login(userLoginDto.email, userLoginDto.password);
+        return res;
+    }
 }
+
